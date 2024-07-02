@@ -1,18 +1,18 @@
-"use client";
+'use client'
 
-import { NextUIProvider } from "@nextui-org/react";
-import "./global.css";
+import './global.css'
+import Providers from './providers'
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode
 }>) {
-  return (
-    <html lang="en">
-      <body>
-        <NextUIProvider>{children}</NextUIProvider>
-      </body>
-    </html>
-  );
+	return (
+		<html lang='en'>
+			<body>
+				<Providers>{children}</Providers>
+			</body>
+		</html>
+	)
 }
