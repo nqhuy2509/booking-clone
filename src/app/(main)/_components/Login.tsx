@@ -9,7 +9,6 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-  Checkbox,
   Input,
   Link,
 } from "@nextui-org/react";
@@ -18,6 +17,7 @@ import LockIcon from "./LockIcon";
 import { Controller, useForm } from "react-hook-form";
 import authApi from "@/api/authApi";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { AxiosError } from "axios";
 
 interface ILoginForm {
@@ -27,7 +27,6 @@ interface ILoginForm {
 
 export default function Login() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -40,16 +39,34 @@ export default function Login() {
 
   const onSubmit = async (data: ILoginForm) => {
     setIsLoading(true);
+    setError("");
     try {
+      console.log("Submitting login form with data:", data);
       const response = await authApi.login(data.email, data.password);
-      console.log(response);
+      console.log("Login API response:", response);
+
+      if (response.status === 200) {
+        toast.success("Đăng nhập thành công!");
+        onClose();
+      } else {
+        console.error("Unexpected response status:", response.status);
+        setError("Có lỗi xảy ra. Vui lòng thử lại sau.");
+        toast.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Login error:", error);
 
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
           setError("Tên đăng nhập hoặc mật khẩu không đúng!");
+          toast.error("Tên đăng nhập hoặc mật khẩu không đúng!");
+        } else {
+          setError("Có lỗi xảy ra. Vui lòng thử lại sau.");
+          toast.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
         }
+      } else {
+        setError("Có lỗi xảy ra. Vui lòng thử lại sau.");
+        toast.error("Có lỗi xảy ra. Vui lòng thử lại sau.");
       }
     } finally {
       setIsLoading(false);
@@ -60,7 +77,7 @@ export default function Login() {
     <div>
       <Button
         onPress={onOpen}
-        className=" text-text_color font-semibold text-lg p-1 rounded bg-white "
+        className="text-text_color font-semibold text-lg p-1 rounded bg-white"
       >
         Đăng nhập
       </Button>
@@ -85,7 +102,6 @@ export default function Login() {
                 />
               )}
             />
-
             <Controller
               name="password"
               control={control}
@@ -103,7 +119,6 @@ export default function Login() {
                 />
               )}
             />
-
             <div className="flex py-2 px-1 justify-between">
               <Link color="primary" href="#" size="sm">
                 Quên mật khẩu?
@@ -115,12 +130,17 @@ export default function Login() {
             <Button color="danger" variant="flat" onClick={onClose}>
               Đóng
             </Button>
-            <Button color="primary" onClick={handleSubmit(onSubmit)}>
-              Đăng nhập
+            <Button
+              color="primary"
+              onClick={handleSubmit(onSubmit)}
+              disabled={isLoading}
+            >
+              {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <ToastContainer />
     </div>
   );
 }
