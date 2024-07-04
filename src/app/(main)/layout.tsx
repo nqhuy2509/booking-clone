@@ -12,8 +12,8 @@ export default function RootLayout({
 }>) {
 	return (
 		<>
-			<ToastContainer />
 			<div>
+				<ToastContainer position='bottom-right' />
 				<NavBar />
 				<NavBarBehind />
 
