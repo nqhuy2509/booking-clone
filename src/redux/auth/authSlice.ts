@@ -1,3 +1,4 @@
+import { AuthModel } from '../../interfaces/auth.model'
 import { PayloadAction } from './../../../node_modules/@reduxjs/toolkit/dist/createAction.d'
 import { createSlice } from '@reduxjs/toolkit'
 
@@ -15,9 +16,9 @@ export const authSlice = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
-		setAuthState: (state, action: PayloadAction<IAuthState>) => {
+		setAuthState: (state, action: PayloadAction<AuthModel>) => {
 			state.email = action.payload.email
-			state.isAuthenticated = action.payload.isAuthenticated
+			state.isAuthenticated = true
 		},
 		logout: (state) => {
 			state.email = ''

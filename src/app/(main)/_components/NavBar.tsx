@@ -6,6 +6,7 @@ import Language from './Language'
 import Login from './Login'
 import Register from './Register'
 import { useAppSelector } from '../../../redux/store'
+import UserProfile from './UserProfile'
 
 export default function NavBar() {
 	const authState = useAppSelector((state) => state.auth)
@@ -31,17 +32,20 @@ export default function NavBar() {
 								className=''
 							/>
 						</Button>
-						<Button className='text-white font-semibold p-1 text-xl bg-transparent'>
-							{' '}
-							Đăng chổ nghỉ của Quý vị{' '}
-						</Button>
+
 						{!authState.isAuthenticated ? (
 							<>
+								<Button className='text-white font-semibold p-1 text-xl bg-transparent'>
+									{' '}
+									Đăng chổ nghỉ của Quý vị{' '}
+								</Button>
 								<Register />
 								<Login />
 							</>
 						) : (
-							<></>
+							<>
+								<UserProfile />
+							</>
 						)}
 					</NavbarContent>
 				</Navbar>
