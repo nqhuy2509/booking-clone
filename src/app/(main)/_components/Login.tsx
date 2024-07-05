@@ -20,8 +20,8 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { AxiosError } from 'axios'
 import { useDispatch } from 'react-redux'
-import { setAuthState } from '../../../redux/auth/authSlice'
-import { setToken } from '../../../utils/storage'
+import { setAuthState } from '@/redux/auth/authSlice'
+import { setToken } from '@/utils/storage'
 
 interface ILoginForm {
 	email: string
@@ -46,9 +46,7 @@ export default function Login() {
 		setIsLoading(true)
 		setError('')
 		try {
-			console.log('Submitting login form with data:', data)
 			const response = await authApi.login(data.email, data.password)
-			console.log('Login API response:', response)
 
 			if (response.success) {
 				toast.success('Đăng nhập thành công!')
