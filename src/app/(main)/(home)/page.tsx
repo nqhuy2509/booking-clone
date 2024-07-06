@@ -1,22 +1,22 @@
 'use client'
 import { DateRangePicker } from '@nextui-org/date-picker'
 import { Checkbox, Input } from '@nextui-org/react'
-import Link from 'next/link'
 import { useState } from 'react'
+import { FaSearch } from 'react-icons/fa'
 
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import Carousel from '../_components/Carousel'
 import Footer from '../_components/Footer'
 import NavSlogan from '../_components/NavSlogan'
-import { searchItems } from '../_components/SearchHotelItem'
 import SlideShow from '../_components/SlideShow'
 export default function Page() {
 	const [adults, setAdults] = useState(0)
 	const [childs, setChilds] = useState(0)
 	const [rooms, setRooms] = useState(0)
 	const pathname = usePathname()
+	const router = useRouter()
 
 	useEffect(() => {}, [])
 	return (
@@ -105,20 +105,13 @@ export default function Page() {
 						</DropdownMenu>
 					</Dropdown>
 					<div className='pl-2'>
-						<Button className=' bg-[#006ce4] text-white font-bold hover:cursor-zoom-out col-span-1'>
-							{searchItems.map((item) => (
-								<Link
-									href={item.path}
-									className={`flex items-center px-3 py-2 rounded-3xl ${
-										pathname == item.path
-											? 'border-white border-2 bg-white bg-opacity-20'
-											: 'hover:bg-white hover:bg-opacity-10 cursor-pointer'
-									}`}
-									key={item.key}>
-									<span className='text-xl me-1'>{item.icon}</span>
-									<h3>{item.title}</h3>
-								</Link>
-							))}
+						<Button
+							className=' bg-[#006ce4] text-white font-bold hover:cursor-zoom-out col-span-1'
+							startContent={<FaSearch />}
+							onClick={() => {
+								router.push('/search-result')
+							}}>
+							Tìm
 						</Button>
 					</div>
 				</div>
