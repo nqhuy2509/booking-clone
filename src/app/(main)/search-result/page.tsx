@@ -1,23 +1,22 @@
 'use client'
-import { Image, Input, Popover } from '@nextui-org/react'
-import React, { useState } from 'react'
 import { DateRangePicker } from '@nextui-org/date-picker'
-import { CheckboxGroup, Checkbox } from '@nextui-org/react'
-import Link from 'next/link'
+import { Image, Input } from '@nextui-org/react'
+import { useState } from 'react'
 import { CiFilter } from 'react-icons/ci'
 
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
 
-import NavSlogan from '../_components/NavSlogan'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
-import { searchItems } from '../_components/SearchHotelItem'
-import SelectionHotel from './components/SelectionHotel'
-import { StayModel } from '../../../interfaces/stay.model'
+import { FaSearch } from 'react-icons/fa'
+import { toast } from 'react-toastify'
 import stayApi from '../../../api/stayApi'
 import { LoadingComponent } from '../../../components/LoadingComponent'
-import { toast } from 'react-toastify'
+import { StayModel } from '../../../interfaces/stay.model'
 import Footer from '../_components/Footer'
+import NavSlogan from '../_components/NavSlogan'
+import SelectionHotel from './components/SelectionHotel'
+
 export default function Page() {
 	const [adults, setAdults] = useState(0)
 	const [childs, setChilds] = useState(0)
@@ -25,15 +24,22 @@ export default function Page() {
 	const pathname = usePathname()
 	const [stays, setStays] = useState<[StayModel]>()
 	const [loading, setLoading] = useState(false)
+	const router = useRouter()
+	const [keyword, setKeyword] = useState('')
+
+	const searchParams = useSearchParams()
+
+	const type = searchParams.get('type') || ''
+	const searchKeyword = searchParams.get('keyword') || ''
 
 	useEffect(() => {
 		fetchStays()
-	}, [])
+	}, [searchParams])
 
 	const fetchStays = async () => {
 		try {
 			setLoading(true)
-			const staysResponse = await stayApi.getAllStay()
+			const staysResponse = await stayApi.getAllStay(type || '', searchKeyword || '')
 
 			setStays(staysResponse.data)
 		} catch {
@@ -43,13 +49,22 @@ export default function Page() {
 		}
 	}
 
+	const handleSearch = () => {
+		router.replace(`/search-result?type=${type}&keyword=${keyword}`)
+	}
+
 	return (
 		<div>
 			{loading && <LoadingComponent />}
 			<NavSlogan />
 			<div className='max-w-screen-2xl mx-auto '>
 				<div className='grid grid-cols-12 justify-start items-center pt-5 w-full'>
-					<Input type='text' placeholder='Bạn muốn đến đâu? ' className='col-span-4' />
+					<Input
+						type='text'
+						placeholder='Bạn muốn đến đâu? '
+						className='col-span-4'
+						onChange={(e) => setKeyword(e.target.value)}
+					/>
 					<div className='flex p-1 flex-2 col-span-4'>
 						<DateRangePicker label='Ngày nhận - trả phòng' className='max-w-xs' />
 					</div>
@@ -129,18 +144,11 @@ export default function Page() {
 						</DropdownMenu>
 					</Dropdown>
 					<div className='pl-2'>
-						<Button className=' bg-[#006ce4] text-white font-bold hover:cursor-zoom-out col-span-1'>
-							{searchItems.map((item) => (
-								<Link
-									href={item.path}
-									className={`flex items-center px-3 py-2 rounded-3xl ${
-										pathname == item.path
-									}`}
-									key={item.key}>
-									<span className='text-xl me-1'>{item.icon}</span>
-									<h3>{item.title}</h3>
-								</Link>
-							))}
+						<Button
+							className=' bg-[#006ce4] text-white font-bold hover:cursor-zoom-out col-span-1'
+							startContent={<FaSearch />}
+							onClick={handleSearch}>
+							Tìm
 						</Button>
 					</div>
 				</div>
