@@ -6,6 +6,7 @@ import { BookingItem } from "../_components/BookingItem";
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import roomApi from "@/api/roomApi";
 
 export default function RoomDetailPage() {
   const router = useRouter();
@@ -36,9 +37,6 @@ export default function RoomDetailPage() {
             <span className="ml-2 text-sm text-gray-600">Excellent</span>
           </div>
           <div className="flex items-center mb-2">
-            <div className="w-8 h-8 bg-[#003b95] text-white rounded-md flex items-center justify-center mr-2">
-              8.8
-            </div>
             <span className="text-sm text-gray-600">Great</span>
           </div>
           <p className="mb-4 text-gray-700">
@@ -49,7 +47,7 @@ export default function RoomDetailPage() {
           </p>
         </div>
         <div className="px-6 py-4 bg-gray-100 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-[#006ce4]">VND 597,087</h2>
+          <h2 className="text-2xl font-bold text-[#006ce4]">VND </h2>
           <Button
             onClick={() => {
               router.push("/booking");

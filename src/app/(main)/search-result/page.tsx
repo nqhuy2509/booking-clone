@@ -246,7 +246,6 @@ export default function Page() {
         </div>
 
         <div className="pl-7">
-          <h1 className=" text-3xl font-bold"> properties found</h1>
           <div className="pt-5 ">
             <Button className="  font-semibold">
               {" "}
