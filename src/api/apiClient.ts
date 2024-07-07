@@ -1,13 +1,15 @@
 import axios from 'axios'
 import queryString from 'query-string'
+import { getToken } from '../utils/storage'
 const apiClient = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
 	timeout: 10000,
 	paramsSerializer: (params) => queryString.stringify(params),
 })
 apiClient.interceptors.request.use(async (config: any) => {
+	const accessToken = getToken()
 	config.headers = {
-		Authorization: '',
+		Authorization: `Bearer ${accessToken}`,
 		Accept: 'application/json',
 		...config.headers,
 	}

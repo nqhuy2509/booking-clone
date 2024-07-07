@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
 	Modal,
 	ModalContent,
@@ -19,9 +19,11 @@ import authApi from '@/api/authApi'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { AxiosError } from 'axios'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setAuthState } from '@/redux/auth/authSlice'
 import { setToken } from '@/utils/storage'
+import { useAppSelector } from '../../../redux/store'
+import { hideLoginDialog } from '../../../redux/ui/uiSlice'
 
 interface ILoginForm {
 	email: string
@@ -41,6 +43,23 @@ export default function Login() {
 	})
 
 	const dispatch = useDispatch()
+
+	const uiState = useAppSelector((state) => state.ui)
+
+	const onCloseDialog = useCallback(() => {
+		onClose()
+		dispatch(hideLoginDialog())
+	}, [onClose, dispatch])
+
+	useEffect(() => {
+		console.log(uiState.isShowLoginDialog)
+
+		if (uiState.isShowLoginDialog) {
+			onOpen()
+		} else {
+			onCloseDialog()
+		}
+	}, [uiState.isShowLoginDialog, onOpen, onCloseDialog])
 
 	const onSubmit = async (data: ILoginForm) => {
 		setIsLoading(true)
@@ -85,7 +104,7 @@ export default function Login() {
 				className='text-text_color font-semibold text-lg p-1 rounded bg-white'>
 				Đăng nhập
 			</Button>
-			<Modal isOpen={isOpen} onClose={onClose} placement='top-center'>
+			<Modal isOpen={isOpen} onClose={onCloseDialog} placement='top-center'>
 				<ModalContent>
 					<ModalHeader className='flex flex-col gap-1'>Đăng nhập</ModalHeader>
 					<ModalBody>
@@ -131,7 +150,7 @@ export default function Login() {
 						{error && <p className='text-danger'>{error}</p>}
 					</ModalBody>
 					<ModalFooter>
-						<Button color='danger' variant='flat' onClick={onClose}>
+						<Button color='danger' variant='flat' onClick={onCloseDialog}>
 							Đóng
 						</Button>
 						<Button

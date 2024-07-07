@@ -6,6 +6,9 @@ const roomApi = {
 	getAllRoomByStay: async (stayId: string): Promise<IResponseAPI<[RoomModel]>> => {
 		return await apiClient.get(`api/v1/rooms/${stayId}?available=true`)
 	},
+	getRoomById: async (roomId: string): Promise<IResponseAPI<RoomModel>> => {
+		return await apiClient.get(`api/v1/room/${roomId}`)
+	},
 }
 
 export default roomApi
