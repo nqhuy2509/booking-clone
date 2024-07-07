@@ -34,7 +34,7 @@ const SelectionHotel: React.FC<Props> = ({ stay }) => {
               <FaStar className="text-[#ffb700] text-xl mr-1" />
               <FaStar className="text-[#ffb700] text-xl mr-1" />
               <AiFillLike className="text-[#ffb700] text-xl" />
-              <span className="ml-2 text-sm text-gray-600">Excellent</span>
+              <span className="ml-2 text-sm text-gray-600">Tuyệt vời</span>
             </div>
 
             <div className="flex items-center mb-2 text-[#006ce4] font-semibold">
@@ -43,17 +43,16 @@ const SelectionHotel: React.FC<Props> = ({ stay }) => {
                 {stay.location?.province}
               </span>
               <Link href="#" passHref>
-                <span className="text-[#006ce4] cursor-pointer">
-                  Show on map
-                </span>
+                <span className="text-[#006ce4] cursor-pointer">Bản đồ</span>
               </Link>
             </div>
             <div className="bg-[#008234] text-white rounded-lg px-2 py-1 mb-2 inline-block">
-              Getaway Deal
+              Giá tốt
             </div>
             <div className="font-semibold mb-2">
               <p className="text-[#008234] text-sm">
-                Free cancellation • No prepayment needed – pay at the property
+                Miễn phí hủy phòng • Không cần thanh toán trước – Thanh toán tại
+                chổ nghỉ
               </p>
             </div>
           </div>

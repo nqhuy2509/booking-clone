@@ -1,4 +1,5 @@
 import React from "react";
+import Footer from "../_components/Footer";
 
 const BookingHistory = () => {
   const bookings = [
@@ -55,7 +56,7 @@ const BookingHistory = () => {
           )}
         </div>
       </div>
-      <div className="pt-4"></div>
+      <Footer />
     </div>
   );
 };
